@@ -1,14 +1,22 @@
 import io.appium.java_client.AppiumBy;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.options.UiAutomator2Options;
+import io.appium.java_client.remote.SupportsContextSwitching;
 import org.example.Main;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 public class AddMultipleCart extends Main {
 
@@ -68,7 +76,31 @@ public class AddMultipleCart extends Main {
         driver.findElement(AppiumBy.className("android.widget.CheckBox")).click();
         driver.findElement(By.id("com.androidsample.generalstore:id/btnProceed")).click();
 
-        Thread.sleep(300);
+
+    }
+
+    @Test
+    public void hybridApp() throws InterruptedException, MalformedURLException {
+        Thread.sleep(6000);
+        UiAutomator2Options options = new UiAutomator2Options().setAutoGrantPermissions(true);
+
+        //ChromedriverExecutable
+        options.setChromedriverExecutable(System.getProperty("user.dir") + "/resources/chromedriver");
+
+        AppiumDriver drivers = new AndroidDriver(new URL("http://localhost:4723/wd/hub"), options);
+
+        Set<String> contextNames = ((SupportsContextSwitching) drivers).getContextHandles();
+        for (String contextName : contextNames) {
+            System.out.println("Context  " + contextName);
+        }
+
+        ((SupportsContextSwitching) drivers).context("WEBVIEW_com.androidsample.generalstore");
+
+        drivers.findElement(By.name("q")).sendKeys("Fruits");
+        drivers.findElement(By.name("q")).sendKeys(Keys.ENTER);
+        drivers.navigate().back();
+        ((SupportsContextSwitching) drivers).context("NATIVE_APP");
+
     }
 
 }

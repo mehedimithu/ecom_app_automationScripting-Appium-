@@ -2,9 +2,12 @@ package org.example;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.Activity;
+import io.appium.java_client.android.options.UiAutomator2Options;
+import io.appium.java_client.remote.options.BaseOptions;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import org.openqa.selenium.DeviceRotation;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -28,6 +31,8 @@ public class Main {
         service.start();*/
 
         DesiredCapabilities caps = new DesiredCapabilities();
+
+
         URL uri = new URL("http://127.0.0.1:4723/wd/hub/");
         caps.setCapability("platformName", "Android");
         caps.setCapability("platformVersion", "12");
